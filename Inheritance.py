@@ -1,3 +1,7 @@
+# ========================================================= #
+# This code snippet shows the functionality of Inheritance. #
+# ========================================================= #
+
 from time import time
 import matplotlib.pyplot as plt
 
