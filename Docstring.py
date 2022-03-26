@@ -2,7 +2,7 @@
 # This code snippet shows the functionality of Docstring. #
 # ======================================================= #
 
-class Sensor_v1:
+class Sensor_v1():
 
     def __init__(self):
         self.temp = 0.0
@@ -23,7 +23,7 @@ class Sensor_v1:
     def display_relative_humidity(self):
         print(f"Relative Humidity: {self.rh}")
 
-class Sensor_v2:
+class Sensor_v2():
 
     """
     This class contains methods to detect environmental variables.
