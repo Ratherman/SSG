@@ -1,4 +1,4 @@
-# Colang_AI
+# Golang_AI
 * ubuntu 20.04
 * python: v3.7.0
 * Anaconda: please get anaconda software from [here](https://www.anaconda.com/products/distribution)
@@ -9,6 +9,7 @@ conda activate Golang_AI
 conda install jupyter notebook
 conda install -c conda-forge opencv # this will spend more time
 conda install pytorch torchvision torchaudio cpuonly -c pytorch
+conda insatll numpy
 ```
 
 # Classifier of Cat & Dog
