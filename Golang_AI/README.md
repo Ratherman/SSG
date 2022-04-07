@@ -5,11 +5,21 @@
 
 ```
 conda create -n "Golang_AI" python=3.7.0
+
 conda activate Golang_AI
+
 conda install jupyter notebook
-conda install -c conda-forge opencv # this will spend more time
+
+# this will spend more time
+conda install -c conda-forge opencv 
+
 conda install pytorch torchvision torchaudio cpuonly -c pytorch
-conda insatll numpy
+
+conda install numpy
+
+conda install matplotlib
+
+conda install tqdm
 ```
 
 # Classifier of Cat & Dog
