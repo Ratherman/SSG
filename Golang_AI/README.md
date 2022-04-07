@@ -13,7 +13,12 @@ conda install jupyter notebook
 # this will spend more time
 conda install -c conda-forge opencv 
 
+# if only support cpu
 conda install pytorch torchvision torchaudio cpuonly -c pytorch
+
+# if support gpu
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+
 
 conda install numpy
 
