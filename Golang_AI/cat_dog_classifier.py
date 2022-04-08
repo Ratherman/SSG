@@ -6,6 +6,24 @@ import torch
 import cv2 as cv
 from torch import nn
 
+# ============== #
+# Argument Check #
+# ============== #
+if len(sys.argv) != 3:
+    print("The format shoud be: \npython cat_dog_classifier.py ./model/CNN_model_weights.pth ./image/Cat_Sample_01.jpg")
+    exit()
+if type(sys.argv[1]) != str:
+    print("The second argument should be string, i.e., ./PATH/TO/YOUR_TRAINED_MODEL.pth")
+    exit()
+if type(sys.argv[2]) != str:
+    print("The third argument should be string, i.e., ./PATH/TO/YOU_NAME_IT.jpg")
+    exit()
+
+# print("Image Path: ", sys.argv[1])
+# print("Model Path: ", sys.argv[2])
+model_path = sys.argv[1]
+image_path = sys.argv[2]
+
 # ================ #
 # Define CNN Class #
 # ================ #
@@ -70,7 +88,6 @@ class CNN_v1(nn.Module):
             nn.Linear(in_features= self.fspec[0], out_features=self.fspec[1]),
             nn.ReLU(),
             nn.Linear(in_features= self.fspec[1], out_features=self.fspec[2]),
-            nn.ReLU()
         )
                     
     def forward(self, img):
@@ -83,34 +100,13 @@ class CNN_v1(nn.Module):
         image = cv.imread(img_path)
         image = cv.resize(image, (self.img_size, self.img_size))
         image = image / 255.
-        
-        # channel first
-        if self.x_transform:
+     
+        if None:
             image = self.x_transform(image)
-        
+
+        #channel first
         image = image.reshape(3, self.img_size, self.img_size)
         return image
-
-# ============== #
-# Argument Check #
-# ============== #
-if len(sys.argv) != 3:
-    print("The format shoud be: \npython cat_dog_classifier.py YOU_NAME_IT.jpg ./model/CNN_model_weights.pth")
-    exit()
-if type(sys.argv[1]) != str:
-    print("The second argument should be string, i.e., ./PATH/TO/YOU_NAME_IT.jpg")
-    exit()
-if cv.imread(sys.argv[1]) == None:
-    print("The image file dosen't exist.")
-    exit()
-if type(sys.argv[2]) != str:
-    print("The third argument should be string, i.e., ./model/CNN_model_weights.pth")
-    exit()
-
-print("Image Path: ", sys.argv[1])
-image_path = sys.argv[1]
-print("Model Path: ", sys.argv[2])
-model_path = sys.argv[2]
 
 # ======================== #
 # Initialize CNN structure #
@@ -131,10 +127,11 @@ test_img_tensor = torch.unsqueeze(test_img_tensor, 0).float()
 # Predict input image #
 # =================== #
 with torch.no_grad():
-    pred_probability = CNN_model(test_img_tensor)
-    if pred_probability > 0.5:
-        result = {"result": "dog"}
+    logit = CNN_model(test_img_tensor)
+    logit = logit.cpu().numpy()[0][0]
+    if logit > 0:
+        result = {"result": "dog", "logit": logit}
     else:
-        result = {"result": "cat"}
-
+        result = {"result": "cat", "logit": logit}
+    
 print(result)
