@@ -1,5 +1,5 @@
 # Golang_AI
-* ubuntu 20.04, windows 11
+* Ubuntu 20.04, Windows 11
 * python: v3.7.0
 * Anaconda: please get anaconda software from [here](https://www.anaconda.com/products/distribution)
 
@@ -51,5 +51,5 @@ conda install tqdm
 * pytorch: v1.4.0 (cpu only)
 
 # Reference
-* [Datasets](https://www.kaggle.com/competitions/dogs-vs-cats/data?select=train.zip): kaggle dataset with 25,000 images in training dataset
+* [Datasets](https://www.kaggle.com/competitions/dogs-vs-cats/data?select=train.zip): kaggle dataset with 50,000 images in training dataset
 * [Anaconda](https://www.anaconda.com/products/distribution)
