@@ -47,9 +47,15 @@ conda install matplotlib
 conda install tqdm
 ```
 
+# If interested in XAI:
+```
+pip install grad-cam
+```
+
 # Classifier of Cat & Dog
 * pytorch: v1.4.0 (cpu only)
 
 # Reference
-* [Datasets](https://www.kaggle.com/competitions/dogs-vs-cats/data?select=train.zip): kaggle dataset with 50,000 images in training dataset
+* [Datasets](https://www.kaggle.com/competitions/dogs-vs-cats/data?select=train.zip): kaggle dataset with 25,000 images in training dataset
 * [Anaconda](https://www.anaconda.com/products/distribution)
+* [XAI](https://github.com/jacobgil/pytorch-grad-cam?fbclid=IwAR2RyMR2A1EjjG7ARuDldrgzs7lryQB3-zOsznzLRDLxHh661bdJUasWPcs)
