@@ -3,7 +3,9 @@
 # ============ #
 import sys
 import torch
-import cv2 as cv
+#import cv2 as cv
+from PIL import Image
+import numpy as np
 from torch import nn
 
 # ============== #
@@ -97,8 +99,11 @@ class CNN_v1(nn.Module):
         return logits
 
     def __preprocess__(self, img_path):
-        image = cv.imread(img_path)
-        image = cv.resize(image, (self.img_size, self.img_size))
+        #image = cv.imread(img_path)
+        image = Image.open(img_path)
+        #image = cv.resize(image, (self.img_size, self.img_size))
+        image = image.resize((self.img_size, self.img_size), Image.BILINEAR)
+        image = np.asarray(image)
         image = image / 255.
      
         if None:
