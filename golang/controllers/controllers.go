@@ -25,7 +25,7 @@ func UploadImage(c *gin.Context) {
 	//filename := file.Filename
 	//header := file.Header
 
-	SavePath = "./image/" + time.Now().Format("20060102150405") + file.Filename
+	SavePath = "../Golang_AI/image" + time.Now().Format("20060102150405") + file.Filename
 	setPath(&SavePath)
 	_ = c.SaveUploadedFile(file, SavePath)
 
@@ -37,7 +37,8 @@ func UploadImage(c *gin.Context) {
 
 	//fmt.Println(header)
 
-	Pass_data(c, SavePath)
+	//Pass_data(c, SavePath)
+	Test(c, SavePath)
 	//c.Writer.WriteString(string(data))
 }
 
@@ -61,8 +62,13 @@ func setPath(s *string) string {
 	return Path
 }
 
-func Test(c *gin.Context) {
-	a := middlewares.Calc()
+func Test(c *gin.Context, SavePath string) {
+	a := middlewares.Calc(SavePath)
 	c.String(http.StatusOK, "您輸入的文字為: \n%s", a)
 
+}
+
+func Test_image(c *gin.Context) {
+	SavePath = "./image/Cat_Sample_01.jpg"
+	Test(c, SavePath)
 }

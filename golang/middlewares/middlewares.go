@@ -3,7 +3,6 @@ package middlewares
 import (
 	"fmt"
 	"os/exec"
-	"path/filepath"
 	"shorten/inits"
 	"strings"
 
@@ -12,10 +11,14 @@ import (
 
 var I int
 
-func Calc() string {
-	abspath, _ := filepath.Abs("..\\Golang_AI\\cat_dog_classifier.py")
+func Calc(c string) string {
+	abspath := "..\\Golang_AI\\cat_dog_classifier.py"
+	//abspath2 := "..\\Golang_AI\\model\\CNN_model_weights.pth"
 	fmt.Println(abspath)
-	cmd := exec.Command("python", "..\\Golang_AI\\cat_dog_classifier.py")
+
+	cmd := exec.Command("python", ".\\cat_dog_classifier.py", ".\\model\\CNN_model_weights.pth", c)
+	cmd.Dir = "..\\Golang_AI\\"
+	fmt.Println("python " + "cat_dog_classifier.py" + " " + c + " " + ".\\model\\CNN_model_weights.pth")
 	//	cmd.Dir = "\\Users\\USER\\Desktop\\go\\SSG\\golang"
 	output, e := cmd.CombinedOutput()
 	if e != nil {
@@ -30,7 +33,7 @@ func Calc() string {
 	//	dI, e = strconv.Atoi(strs[1])
 	//	fmt.Println(sI)
 	//	fmt.Println(dI)
-	return strs[len(strs)-2]
+	return result
 }
 
 func Dump_to_python(s string) string {
