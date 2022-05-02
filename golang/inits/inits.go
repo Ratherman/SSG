@@ -17,8 +17,6 @@ type Single struct {
 	Method *python3.PyObject
 }
 
-var singleInstance Single
-
 func Init(single Single) Single {
 
 	fmt.Println("######0")
@@ -74,14 +72,12 @@ var I int
 
 func GetInstance() Single {
 	I++
-	once.Do(
+	//	once.Do(
 
-		func() {
-			fmt.Println("Creating single instance now.")
-			python3.Py_Initialize()
-			singleInstance = Single{}
-			singleInstance = Init(singleInstance)
-		})
+	fmt.Println("Creating single instance now.")
+	var singleInstance Single
+	singleInstance = Single{}
+	singleInstance = Init(singleInstance)
 
 	//fmt.Println("###################2")
 

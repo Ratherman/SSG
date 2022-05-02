@@ -2,14 +2,40 @@ package middlewares
 
 import (
 	"fmt"
+	"os/exec"
+	"path/filepath"
 	"shorten/inits"
+	"strings"
 
 	"github.com/DataDog/go-python3"
 )
 
 var I int
 
+func Calc() string {
+	abspath, _ := filepath.Abs("..\\Golang_AI\\cat_dog_classifier.py")
+	fmt.Println(abspath)
+	cmd := exec.Command("python", "..\\Golang_AI\\cat_dog_classifier.py")
+	//	cmd.Dir = "\\Users\\USER\\Desktop\\go\\SSG\\golang"
+	output, e := cmd.CombinedOutput()
+	if e != nil {
+		fmt.Println("Python Execution Error :", e)
+	}
+	fmt.Println("output is :" + string(output))
+	result := string(output)
+	strs := strings.Split(result, "\n")
+
+	println(len(strs))
+	//	sI, e = strconv.Atoi(strs[0])
+	//	dI, e = strconv.Atoi(strs[1])
+	//	fmt.Println(sI)
+	//	fmt.Println(dI)
+	return strs[len(strs)-2]
+}
+
 func Dump_to_python(s string) string {
+	python3.Py_Initialize()
+	defer python3.Py_Finalize()
 
 	/*defer func() {
 		fmt.Println("python3.Py_Finalize()")
@@ -68,6 +94,10 @@ func Dump_to_python(s string) string {
 	//genTestdata := O.Method
 	fmt.Println("456")
 
+	//python3.PyEval_InitThreads()
+
+	//State := python3.PyGILState_Ensure()
+
 	testdataPy := O.Method.CallFunctionObjArgs(a) //retval: New reference
 	if testdataPy == nil {
 		panic("123123")
@@ -81,7 +111,10 @@ func Dump_to_python(s string) string {
 	fmt.Println("780")
 	//err, _ := PythonRepr(l)
 	fmt.Printf("the result :" + str)
+
 	//fmt.Printf("the result :" + err)
+
+	//python3.PyGILState_Release(State)
 
 	return str
 }

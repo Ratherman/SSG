@@ -39,7 +39,7 @@ func SetupRouter() *gin.Engine {
 	r.GET("/hello", helloHandler)
 	//r.GET("/p/:input", controllers.Pass_data)
 	r.GET("/encoder", controllers.Ecoding_url)
-	r.GET("/test", controllers.Pass_data_test)
+	r.GET("/test", controllers.Test)
 	r.POST("/upload", controllers.UploadImage)
 	r.GET("/index", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)

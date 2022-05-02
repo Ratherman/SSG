@@ -1,15 +1,41 @@
 # ============ #
 # Load library #
 # ============ #
+from ntpath import join
 import string
-import sys
+# import sys
 import torch
-import cv2 as cv
+# import cv2 as cv
+from PIL import Image
+import numpy as np
 from torch import nn
 import json
+import torch.multiprocessing as mp
+import time
+
+
+def Read_worker(a, b):
+    im = a
+    device = b
+    # im = image_queue.get(block=True)
+#    im = image_queue.get()
+#   device = image_queue2.get()
+    # print(type(im))
+    # print(im.shape)
+    # stuck here: deadlock?
+    im = torch.Tensor(im).to(device)
+    # image_queue.put(im)
+    # print(im)
+
+
+def fn():
+    print("hello")
 
 
 def train(s):
+    image_queue = mp.SimpleQueue()
+    image_queue2 = mp.SimpleQueue()
+
     # ============== #
     # Argument Check #
     # ============== #
@@ -27,7 +53,7 @@ def train(s):
 
     # print("Image Path: ", sys.argv[1])
     # print("Model Path: ", sys.argv[2])
-    model_path = ".\\SSG\\Golang_AI\\Model\\CNN_model_weights.pth"
+    model_path = "..\\Golang_AI\\Model\\CNN_model_weights.pth"
     image_path = s
 
     # ================ #
@@ -116,8 +142,12 @@ def train(s):
             return logits
 
         def __preprocess__(self, img_path):
-            image = cv.imread(img_path)
-            image = cv.resize(image, (self.img_size, self.img_size))
+            # image = cv.imread(img_path)
+            image = Image.open(img_path)
+            # image = cv.resize(image, (self.img_size, self.img_size))
+            image = image.resize(
+                (self.img_size, self.img_size), Image.Resampling.BILINEAR)
+            image = np.asarray(image)
             image = image / 255.
 
             if None:
@@ -127,7 +157,11 @@ def train(s):
             image = image.reshape(3, self.img_size, self.img_size)
             return image
 
-    # ======================== #
+
+# ======================== #
+# Initialize CNN structure #
+# ======================== #
+        # ======================== #
     # Initialize CNN structure #
     # ======================== #
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -135,11 +169,53 @@ def train(s):
     CNN_model = CNN_v1(img_size=128).to(device)
 
     try:
-        CNN_model.load_state_dict(torch.load(
-            model_path, map_location=torch.device(device)))
+     #   print("147")
+
+        a = torch.load(
+            model_path, map_location=torch.device(device))
+
+        CNN_model.load_state_dict(a, False)
+    #    print("150")
+
         test_img_numpy = CNN_model.__preprocess__(image_path)
+        quene = (test_img_numpy, device)
+   #     print("156")
+
+#        im = test_img_numpy
+        # image_queue.put(im, block=True)
+ #       image_queue.put(im)
+#        image_queue2.put(device)
+  #      print("157")
+        # try:
+        #   mp.set_start_method('spawn')
+        # except RuntimeError:
+        #   pass
+        #image_queue = mp.SimpleQueue()
+
+        #ctx = mp.get_context('spawn')
+
+       # p = mp.spawn(
+        #    Read_worker,
+        #   args=(test_img_numpy, device, image_queue), join=False)
+#        print("127")
+       # p.start()
+        # p.join()
+        # w = mp.spawn(Read_worker, args=(
+        #   test_img_numpy, device, image_queue), nprocs=5, join=True)
+        # test_img_tensor = image_queue.get()
+        # w.daemon = True  # ensure that the worker exits on process exit
+       # w.start()
+        # w.join()
+        # print("done")
+        #ctx = torch.multiprocessing.get_context("spawn")
+        # pool = ctx.Pool(5)  # 7.7G
+        #pool.apply_async(Read_worker, args=(test_img_numpy, device))
+        # pool.close()
+        # pool.join()
         test_img_tensor = torch.tensor(test_img_numpy).to(device)
+        print("159")
         test_img_tensor = torch.unsqueeze(test_img_tensor, 0).float()
+        print("162")
         CNN_model.eval()
     except Exception as e:
         print(e)
@@ -165,7 +241,7 @@ def train(s):
     except Exception as e:
         print(e)
 
-    print(str(result))
+    print("result  :"+str(result))
     try:
         a = str(result)
     except Exception as e:
@@ -173,10 +249,12 @@ def train(s):
     return(a)
 
 
-def Train(s):
+def Main():
+    print("hello")
+    return ["1", "2"]
 
-    #sys.argv[1] = "./Golang_AI/model/CNN_model_weights.pth"
-    #sys.argv[2] = "..\image\20220406192317WIN_20220216_08_47_44_Pro.jpg"
-    a = train(s)
-    print("result======"+a+"\n")
-    return train(s)
+
+if __name__ == '__main__':
+    s = "../golang/image/20220415204023WIN_20220216_08_47_44_Pro.jpg"
+    f = train(s)  # 或是任何你想執行的函式
+    # Main()
