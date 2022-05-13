@@ -1,5 +1,6 @@
 package inits
 
+/*
 import (
 	"fmt"
 	"os"
@@ -102,3 +103,4 @@ func PythonRepr(o *python3.PyObject) (string, error) {
 
 	return python3.PyUnicode_AsUTF8(s), nil
 }
+*/

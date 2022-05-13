@@ -3,21 +3,19 @@ package middlewares
 import (
 	"fmt"
 	"os/exec"
-	"shorten/inits"
 	"strings"
-
-	"github.com/DataDog/go-python3"
+	//"github.com/DataDog/go-python3"
 )
 
 var I int
 
 func Calc(c string) string {
-	abspath := "..\\Golang_AI\\cat_dog_classifier.py"
+	abspath := "../Golang_AI/cat_dog_classifier.py"
 	//abspath2 := "..\\Golang_AI\\model\\CNN_model_weights.pth"
 	fmt.Println(abspath)
 
-	cmd := exec.Command("python", ".\\cat_dog_classifier.py", ".\\model\\CNN_model_weights.pth", c)
-	cmd.Dir = "..\\Golang_AI\\"
+	cmd := exec.Command("python", "./cat_dog_classifier.py", "./model/CNN_model_weights.pth", c)
+	cmd.Dir = "../Golang_AI"
 	fmt.Println("python " + "cat_dog_classifier.py" + " " + c + " " + ".\\model\\CNN_model_weights.pth")
 	//	cmd.Dir = "\\Users\\USER\\Desktop\\go\\SSG\\golang"
 	output, e := cmd.CombinedOutput()
@@ -36,6 +34,7 @@ func Calc(c string) string {
 	return result
 }
 
+/*
 func Dump_to_python(s string) string {
 	python3.Py_Initialize()
 	defer python3.Py_Finalize()
@@ -81,7 +80,8 @@ func Dump_to_python(s string) string {
 	defer genTestdata.DecRef()
 
 	//a := python3.PyFloat_FromDouble(1)
-	*/
+*/
+/*
 	O := inits.GetInstance()
 
 	fmt.Println(O.Method)
@@ -121,7 +121,8 @@ func Dump_to_python(s string) string {
 
 	return str
 }
-
+*/
+/*
 func PythonRepr(o *python3.PyObject) (string, error) {
 	if o == nil {
 		return "", fmt.Errorf("object is nil")
@@ -135,3 +136,4 @@ func PythonRepr(o *python3.PyObject) (string, error) {
 
 	return python3.PyUnicode_AsUTF8(s), nil
 }
+*/

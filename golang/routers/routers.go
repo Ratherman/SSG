@@ -40,7 +40,7 @@ func SetupRouter() *gin.Engine {
 	//r.GET("/p/:input", controllers.Pass_data)
 	r.GET("/encoder", controllers.Ecoding_url)
 	r.GET("/test", controllers.Test_image)
-	r.POST("/upload", controllers.UploadImage)
+	r.POST("/upload", controllers.Post_image)
 	r.GET("/index", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
