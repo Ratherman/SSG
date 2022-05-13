@@ -41,7 +41,7 @@ func (Post_controller) UploadImage(c *gin.Context) {
 	//filename := file.Filename
 	//header := file.Header
 
-	SavePath = "../Golang_AI/image" + time.Now().Format("20060102150405") + file.Filename
+	SavePath = "../Golang_AI/image/" + time.Now().Format("20060102150405") + file.Filename
 	setPath(&SavePath)
 	_ = c.SaveUploadedFile(file, SavePath)
 
