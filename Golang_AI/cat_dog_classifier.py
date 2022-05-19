@@ -29,51 +29,63 @@ image_path = sys.argv[2]
 # ================ #
 # Define CNN Class #
 # ================ #
+
+
 class CNN_v1(nn.Module):
-    
-    def __init__(self, img_size): # I add one more param here, i.e., img_size, for changing CNN structure auto
+
+    # I add one more param here, i.e., img_size, for changing CNN structure auto
+    def __init__(self, img_size):
         super(CNN_v1, self).__init__()
-        
-        self.img_size = img_size # assume (B, C=3, H=256, W=256)
-        
-        self.cspec = [3, 64, 128, 256, 512, 1024, 512, 256] # cspec stands for conv spec
-        self.fspec = [128, 64, 1] # fspec stands for fully connected layer spec
+
+        self.img_size = img_size  # assume (B, C=3, H=256, W=256)
+
+        self.cspec = [3, 64, 128, 256, 512, 1024,
+                      512, 256]  # cspec stands for conv spec
+        # fspec stands for fully connected layer spec
+        self.fspec = [128, 64, 1]
 
         self.repeat_conv = nn.Sequential(
 
             # 換換不同的寫法 v1
             nn.Conv2d(
-                in_channels = self.cspec[0],
-                out_channels = self.cspec[1],
-                kernel_size = (3, 3), # this could be tuple, i.e., (3,3), or just integer i.e., 3.
-                stride = 2, # based on the calculator mentioned above, this setting will make spatial size half
-                padding = 1 
+                in_channels=self.cspec[0],
+                out_channels=self.cspec[1],
+                # this could be tuple, i.e., (3,3), or just integer i.e., 3.
+                kernel_size=(3, 3),
+                stride=2,  # based on the calculator mentioned above, this setting will make spatial size half
+                padding=1
             ),
             nn.ReLU(),                   # (B, C=  64, H=128, W=128)
             nn.BatchNorm2d(self.cspec[1]),
 
             # 換換不同的寫法 v2
-            nn.Conv2d(in_channels=self.cspec[1], out_channels=self.cspec[2], kernel_size=(3, 3), stride=2, padding=1), 
+            nn.Conv2d(in_channels=self.cspec[1], out_channels=self.cspec[2], kernel_size=(
+                3, 3), stride=2, padding=1),
             nn.ReLU(),                   # (B, C= 128, H= 64, W= 64)
             nn.BatchNorm2d(self.cspec[2]),
-            
-            nn.Conv2d(in_channels=self.cspec[2], out_channels=self.cspec[3], kernel_size=(3, 3), stride=2, padding=1), 
+
+            nn.Conv2d(in_channels=self.cspec[2], out_channels=self.cspec[3], kernel_size=(
+                3, 3), stride=2, padding=1),
             nn.ReLU(),                   # (B, C= 256, H= 32, W= 32)
             nn.BatchNorm2d(self.cspec[3]),
-            
-            nn.Conv2d(in_channels=self.cspec[3], out_channels=self.cspec[4], kernel_size=(3, 3), stride=2, padding=1), 
+
+            nn.Conv2d(in_channels=self.cspec[3], out_channels=self.cspec[4], kernel_size=(
+                3, 3), stride=2, padding=1),
             nn.ReLU(),                   # (B, C= 512, H= 16, W= 16)
             nn.BatchNorm2d(self.cspec[4]),
-            
-            nn.Conv2d(in_channels=self.cspec[4], out_channels=self.cspec[5], kernel_size=(3, 3), stride=2, padding=1), 
+
+            nn.Conv2d(in_channels=self.cspec[4], out_channels=self.cspec[5], kernel_size=(
+                3, 3), stride=2, padding=1),
             nn.ReLU(),                   # (B, C=1024, H=  8, W=  8)
             nn.BatchNorm2d(self.cspec[5]),
-        
-            nn.Conv2d(in_channels=self.cspec[5], out_channels=self.cspec[6], kernel_size=(3, 3), stride=2, padding=1), 
+
+            nn.Conv2d(in_channels=self.cspec[5], out_channels=self.cspec[6], kernel_size=(
+                3, 3), stride=2, padding=1),
             nn.ReLU(),                   # (B, C= 512, H=  4, W=  4)
             nn.BatchNorm2d(self.cspec[6]),
-            
-            nn.Conv2d(in_channels=self.cspec[6], out_channels=self.cspec[7], kernel_size=(3, 3), stride=2, padding=1), 
+
+            nn.Conv2d(in_channels=self.cspec[6], out_channels=self.cspec[7], kernel_size=(
+                3, 3), stride=2, padding=1),
             nn.ReLU(),                   # (B, C= 256, H=  2, W=  2)
             nn.BatchNorm2d(self.cspec[7]),
         )
@@ -83,15 +95,15 @@ class CNN_v1(nn.Module):
         # 需要優化 #
         C = 256
         H = 1
-        W = H # assume square
+        W = H  # assume square
         self.repeat_dense = nn.Sequential(
-            nn.Linear(in_features= C*H*W, out_features=self.fspec[0]),
+            nn.Linear(in_features=C*H*W, out_features=self.fspec[0]),
             nn.ReLU(),
-            nn.Linear(in_features= self.fspec[0], out_features=self.fspec[1]),
+            nn.Linear(in_features=self.fspec[0], out_features=self.fspec[1]),
             nn.ReLU(),
-            nn.Linear(in_features= self.fspec[1], out_features=self.fspec[2]),
+            nn.Linear(in_features=self.fspec[1], out_features=self.fspec[2]),
         )
-                    
+
     def forward(self, img):
         feature_map = self.repeat_conv(img)
         features = self.flatten(feature_map)
@@ -102,23 +114,26 @@ class CNN_v1(nn.Module):
         #image = cv.imread(img_path)
         image = Image.open(img_path)
         #image = cv.resize(image, (self.img_size, self.img_size))
-        image = image.resize((self.img_size, self.img_size), Image.BILINEAR)
+        image = image.resize((self.img_size, self.img_size),
+                             Image.Resampling.BILINEAR)
         image = np.asarray(image)
         image = image / 255.
-     
+
         if None:
             image = self.x_transform(image)
 
-        #channel first
+        # channel first
         image = image.reshape(3, self.img_size, self.img_size)
         return image
+
 
 # ======================== #
 # Initialize CNN structure #
 # ======================== #
 device = "cuda" if torch.cuda.is_available() else "cpu"
 CNN_model = CNN_v1(img_size=128).to(device)
-CNN_model.load_state_dict(torch.load(model_path, map_location=torch.device(device)))
+CNN_model.load_state_dict(torch.load(
+    model_path, map_location=torch.device(device)))
 CNN_model.eval()
 
 # ================ #
@@ -138,5 +153,5 @@ with torch.no_grad():
         result = {"result": "dog", "logit": logit}
     else:
         result = {"result": "cat", "logit": logit}
-    
+
 print(result)
